@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterappflorafy/plant_profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Florafy Home Page'),
     );
   }
 }
@@ -47,108 +48,113 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-                flex: 1,
-                child: Center(
-                  child: Text(
-                    'FLORAFY',
-                  ),
-                )),
+                flex: 40,
+                child: Container(
+//                    width: 100,
+//                    height: 100,
+                    margin: EdgeInsets.all(10),
+                    child: Image(
+                      image: NetworkImage(
+                          'https://cdnus.melaleuca.com/Images/florify/bottle-2020.png'),
+                      fit: BoxFit.cover,
+                    ))),
             Expanded(
-              flex: 2,
-              child: Text(
-                'Florafy Logo',
-              ),
-            ),
-            Expanded(
-              flex: 2,
+              flex: 50,
               child: Container(
-                margin: EdgeInsets.only(left: 20, right: 20),
+                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
                 child: Column(children: <Widget>[
-                  TextField(
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Florafy User',
+                  Container(
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    child: Text(
+                      'Florafy Login',
+                      style: TextStyle(
+                          color: Colors.teal,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                  TextField(
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Florafy Password',
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 35, right: 35, bottom: 10, top: 10),
+                    child: TextField(
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Florafy User/Email',
+                      ),
                     ),
                   ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 35, right: 35, bottom: 10, top: 10),
+                    child: TextField(
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Florafy Password',
+                      ),
+                    ),
+                  ),
+                  Text('Forgot Password?',
+                      style: TextStyle(color: Colors.teal)),
+                  Text('Create a new Account',
+                      style: TextStyle(color: Colors.teal))
                 ]),
               ),
             ),
             Expanded(
-                flex: 0,
-                child: Column(
-                  children: <Widget>[
-                    FlatButton(
-                      color: Colors.teal,
-                      textColor: Colors.white,
-                      disabledColor: Colors.grey,
-                      disabledTextColor: Colors.black,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: Colors.blueAccent,
-                      onPressed: () {
-                        /*...*/
-                      },
-                      child: Text(
-                        "Login",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ],
-                )),
-            Expanded(
-                flex: 1,
-                child: Column(
-                  children: <Widget>[
-                    FlatButton(
-                      color: Colors.teal,
-                      textColor: Colors.white,
-                      disabledColor: Colors.grey,
-                      disabledTextColor: Colors.black,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: Colors.blueAccent,
-                      onPressed: () {
-                        /*...*/
-                      },
-                      child: Text(
-                        "Create a new account",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ),
-                  ],
-                )),
-            Expanded(
-                flex: 1,
-                child: Column(
-                  children: <Widget>[
-                    FlatButton(
-                      color: Colors.teal,
-                      textColor: Colors.white,
-                      disabledColor: Colors.grey,
-                      disabledTextColor: Colors.black,
-                      padding: EdgeInsets.all(8.0),
-                      splashColor: Colors.blueAccent,
-                      onPressed: () {
-                        /*...*/
-                      },
-                      child: Text(
-                        "Forgot password?",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    )
-                  ],
-                )),
+              flex: 20,
+              child: Container(
+                margin: EdgeInsets.only(top: 40, bottom: 40),
+                width: 150,
+                child: FlatButton(
+                  color: Colors.teal,
+                  textColor: Colors.white,
+                  disabledColor: Colors.grey,
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+                    /*...*/
+                  },
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ),
+              ),
+            ),
+//            Expanded(
+//                flex: 4,
+//                child: Column(
+//                  children: <Widget>[
+//                    FlatButton(
+//                      color: Colors.teal,
+//                      textColor: Colors.white,
+//                      disabledColor: Colors.grey,
+//                      disabledTextColor: Colors.black,
+//                      padding: EdgeInsets.all(8.0),
+//                      splashColor: Colors.blueAccent,
+//                      onPressed: () {
+//                        /*...*/
+//                      },
+//                      child: Text(
+//                        "Create a new account",
+//                        style: TextStyle(fontSize: 20.0),
+//                      ),
+//                    ),
+//                  ],
+//                )),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PlantProfilePage()),
+          );
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
