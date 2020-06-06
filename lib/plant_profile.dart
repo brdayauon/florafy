@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class PlantProfilePage extends StatefulWidget {
   PlantProfilePage({Key key, this.title, this.uid}) : super(key: key);
@@ -11,14 +12,19 @@ class PlantProfilePage extends StatefulWidget {
 }
 
 class _PlantProfilePageState extends State<PlantProfilePage> {
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseReference ref = FirebaseDatabase.instance.reference();
 
   var currentUser = "";
   var seedlingController = TextEditingController();
   var nameEditController = TextEditingController();
   var sizeEditController = TextEditingController();
   var shapeEditController = TextEditingController();
-
+  var currLocationEditController = TextEditingController();
+  var ageEditController = TextEditingController();
+  var fertilizerUsedEditController = TextEditingController();
+  var colorLeafEditController = TextEditingController();
 
   _PlantProfilePageState() {
     _auth.currentUser().then((user) {
@@ -33,7 +39,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Welcome ${currentUser}')),
+      appBar: AppBar(title: Text('Create Plant Profile')),
       body: Center(
         child: Column(
           children: <Widget>[
@@ -58,10 +64,28 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Leaf Shape'),
             ),
+            TextField(
+              controller: colorLeafEditController,
+              obscureText: false,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Leaf Color'),
+            ),
             Text("Create a plant Profile"),
             RaisedButton(
               child: Text('Add Plant Profile'),
-              onPressed: () {},
+              onPressed: () {
+
+                //write the data: key, value
+                /*
+                ref.child("students/003").set(
+                  {
+                    "name" : nameEditController.text.toString();
+                    "size" : sizeEditController.text.toString();
+                  }
+                )
+                 */
+
+              },
             )
           ],
         ),
