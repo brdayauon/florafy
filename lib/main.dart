@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
+import 'package:flutterappflorafy/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,22 +22,20 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.uid}) : super(key: key);
 
   final String title;
-
+  final FirebaseUser uid;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  var emailEditingController = TextEditingController();
+  var passwordEditingController = TextEditingController();
+  var currentUser = "Unknown";
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: EdgeInsets.only(
                         left: 35, right: 35, bottom: 10, top: 10),
                     child: TextField(
+                      controller: emailEditingController,
                       obscureText: false,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -88,7 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: EdgeInsets.only(
                         left: 35, right: 35, bottom: 10, top: 10),
                     child: TextField(
-                      obscureText: false,
+                      controller: passwordEditingController,
+                      obscureText: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Florafy Password',
@@ -97,8 +99,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Text('Forgot Password?',
                       style: TextStyle(color: Colors.teal)),
-                  Text('Create a new Account',
-                      style: TextStyle(color: Colors.teal))
+                  InkWell(
+                    child: Text('Create a new Account',
+                        style: TextStyle(color: Colors.teal)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                      );
+                    },
+                  )
                 ]),
               ),
             ),
@@ -115,7 +125,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.blueAccent,
                   onPressed: () {
-                    /*...*/
+                    _auth
+                        .signInWithEmailAndPassword(
+                            email: emailEditingController.text.toString(),
+                            password: passwordEditingController.text.toString())
+                        .then((value) {
+                      print("Successfully login! " + value.user.uid);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PlantProfilePage()),
+
+                        //MaterialPageRoute(builder: (context) => PlantProfilePage(uid: value.user.uid)),
+                      );
+                    }).catchError((e) {
+                      print("Failed to login! " + e.toString());
+                    });
                   },
                   child: Text(
                     "Login",
