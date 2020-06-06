@@ -54,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
 //                    height: 100,
                     margin: EdgeInsets.all(10),
                     child: Image(
-                      image: NetworkImage(
-                          'https://cdnus.melaleuca.com/Images/florify/bottle-2020.png'),
+                      //image: NetworkImage('https://cdnus.melaleuca.com/Images/florify/bottle-2020.png'),
+                      image: AssetImage('assets/florafyLogo.png'),
                       fit: BoxFit.cover,
                     ))),
             Expanded(
