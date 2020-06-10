@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterappflorafy/home_page.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
 import 'package:flutterappflorafy/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -149,27 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-//            Expanded(
-//                flex: 4,
-//                child: Column(
-//                  children: <Widget>[
-//                    FlatButton(
-//                      color: Colors.teal,
-//                      textColor: Colors.white,
-//                      disabledColor: Colors.grey,
-//                      disabledTextColor: Colors.black,
-//                      padding: EdgeInsets.all(8.0),
-//                      splashColor: Colors.blueAccent,
-//                      onPressed: () {
-//                        /*...*/
-//                      },
-//                      child: Text(
-//                        "Create a new account",
-//                        style: TextStyle(fontSize: 20.0),
-//                      ),
-//                    ),
-//                  ],
-//                )),
           ],
         ),
       ),
@@ -177,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PlantProfilePage()),
+            MaterialPageRoute(builder: (context) => HomePage()),
           );
         },
         tooltip: 'Increment',
