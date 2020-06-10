@@ -12,19 +12,18 @@ class PlantProfilePage extends StatefulWidget {
 }
 
 class _PlantProfilePageState extends State<PlantProfilePage> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference ref = FirebaseDatabase.instance.reference();
 
   var currentUser = "";
   var seedlingController = TextEditingController();
-  var nameEditController = TextEditingController();
-  var sizeEditController = TextEditingController();
-  var shapeEditController = TextEditingController();
-  var currLocationEditController = TextEditingController();
-  var ageEditController = TextEditingController();
-  var fertilizerUsedEditController = TextEditingController();
-  var colorLeafEditController = TextEditingController();
+  static var nameEditController = TextEditingController();
+  static var sizeEditController = TextEditingController();
+  static var shapeEditController = TextEditingController();
+  static var currLocationEditController = TextEditingController();
+  static var ageEditController = TextEditingController();
+  static var fertilizerUsedEditController = TextEditingController();
+  static var colorLeafEditController = TextEditingController();
 
   _PlantProfilePageState() {
     _auth.currentUser().then((user) {
@@ -36,47 +35,55 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
     });
   }
 
+  final List<String> entries = <String>[
+    'Name',
+    'Location',
+    'Age',
+    'Fertilizer Used',
+    'Size',
+    'Leaf Shape',
+    'Leaf Color',
+  ];
+  final List<TextEditingController> controllers = <TextEditingController>[
+    nameEditController,
+    currLocationEditController,
+    ageEditController,
+    fertilizerUsedEditController,
+    sizeEditController,
+    shapeEditController,
+    colorLeafEditController,
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Create Plant Profile')),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Text(
-              'Welcome ${currentUser}',
-            ),
-            TextField(
-              controller: nameEditController,
-              obscureText: false,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Name'),
-            ),
-            TextField(
-              controller: sizeEditController,
-              obscureText: false,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Size'),
-            ),
-            TextField(
-              controller: shapeEditController,
-              obscureText: false,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Leaf Shape'),
-            ),
-            TextField(
-              controller: colorLeafEditController,
-              obscureText: false,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Leaf Color'),
-            ),
-            Text("Create a plant Profile"),
-            RaisedButton(
-              child: Text('Add Plant Profile'),
-              onPressed: () {
+      body: Column(
+        children: <Widget>[
+         Expanded(
+           child: ListView.builder(
+              itemCount: entries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: 60,
+                  child: Center(
+                    child: TextField(
+                      controller: controllers[index],
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: ('${entries[index]}')),
+                    ),
+                  ),
+                );
+              }),
+         ),
 
-                //write the data: key, value
-                /*
+          RaisedButton(
+          child: Text('Add plant Profile'),
+          color: Colors.teal,
+          onPressed: (){
+            /*
                 ref.child("students/003").set(
                   {
                     "name" : nameEditController.text.toString();
@@ -84,12 +91,13 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                   }
                 )
                  */
+          }
+        )
 
-              },
-            )
-          ],
-        ),
+        ]
+
       ),
-    );
+
+     );
   }
 }
