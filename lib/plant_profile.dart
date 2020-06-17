@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+import 'home_page.dart';
+
+
 class PlantProfilePage extends StatefulWidget {
   PlantProfilePage({Key key, this.title, this.uid}) : super(key: key);
   final String uid;
@@ -24,6 +27,9 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
   static var ageEditController = TextEditingController();
   static var fertilizerUsedEditController = TextEditingController();
   static var colorLeafEditController = TextEditingController();
+  static var environmentEditController = TextEditingController();
+  static var soilTypeEditController = TextEditingController();
+  static var waterRequirementEditController = TextEditingController();
 
   _PlantProfilePageState() {
     _auth.currentUser().then((user) {
@@ -43,6 +49,9 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
     'Size',
     'Leaf Shape',
     'Leaf Color',
+    'Environment',
+    'Water Requirement',
+
   ];
   final List<TextEditingController> controllers = <TextEditingController>[
     nameEditController,
@@ -52,6 +61,9 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
     sizeEditController,
     shapeEditController,
     colorLeafEditController,
+    environmentEditController,
+    soilTypeEditController,
+    waterRequirementEditController,
   ];
 
   @override
@@ -91,6 +103,32 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                   }
                 )
                  */
+            print(nameEditController.text);
+            var timestamp = new DateTime.now().millisecondsSinceEpoch;
+            FirebaseDatabase.instance.reference().child("plants/plant" + timestamp.toString()).set(
+              {
+                "name" : nameEditController.text,
+                "location" : currLocationEditController.text,
+                "age" : ageEditController.text,
+                "fertilizer" : fertilizerUsedEditController.text,
+                "size" : sizeEditController.text,
+                "shape" : shapeEditController.text,
+                "color" : colorLeafEditController.text,
+                "environment" : environmentEditController.text,
+                "soilType" : soilTypeEditController.text,
+                "waterRequirement" : waterRequirementEditController.text,
+              }
+            ).then((value) {
+              print("Successfully added the plant");
+            }).catchError((error){
+              print("Failed to add. " + error.toString());
+            });
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+
           }
         )
 
