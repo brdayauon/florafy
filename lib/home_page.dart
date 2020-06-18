@@ -48,13 +48,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Home Page')),
-      body: ListView.builder(
-          itemCount: plantProfileList.length,
-          itemBuilder: (BuildContext context, int index){
-            return ListTile(
-              
-            );
-          }),
+      body: PageView(
+        children: <Widget>[
+          Container(
+            color: Colors.teal,
+          ),
+          Container(
+            color: Colors.green,
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
