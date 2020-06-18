@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PlantProfilePage()),
+                            builder: (context) => HomePage()),
 
                         //MaterialPageRoute(builder: (context) => PlantProfilePage(uid: value.user.uid)),
                       );

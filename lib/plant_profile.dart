@@ -4,7 +4,6 @@ import 'package:firebase_database/firebase_database.dart';
 
 import 'home_page.dart';
 
-
 class PlantProfilePage extends StatefulWidget {
   PlantProfilePage({Key key, this.title, this.uid}) : super(key: key);
   final String uid;
@@ -51,7 +50,6 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
     'Leaf Color',
     'Environment',
     'Water Requirement',
-
   ];
   final List<TextEditingController> controllers = <TextEditingController>[
     nameEditController,
@@ -70,10 +68,9 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Create Plant Profile')),
-      body: Column(
-        children: <Widget>[
-         Expanded(
-           child: ListView.builder(
+      body: Column(children: <Widget>[
+        Expanded(
+          child: ListView.builder(
               itemCount: entries.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
@@ -89,13 +86,12 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                   ),
                 );
               }),
-         ),
-
-          RaisedButton(
-          child: Text('Add plant Profile'),
-          color: Colors.teal,
-          onPressed: (){
-            /*
+        ),
+        RaisedButton(
+            child: Text('Add plant Profile'),
+            color: Colors.teal,
+            onPressed: () {
+              /*
                 ref.child("students/003").set(
                   {
                     "name" : nameEditController.text.toString();
@@ -103,39 +99,34 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                   }
                 )
                  */
-            print(nameEditController.text);
-            var timestamp = new DateTime.now().millisecondsSinceEpoch;
-            FirebaseDatabase.instance.reference().child("plants/plant" + timestamp.toString()).set(
-              {
-                "name" : nameEditController.text,
-                "location" : currLocationEditController.text,
-                "age" : ageEditController.text,
-                "fertilizer" : fertilizerUsedEditController.text,
-                "size" : sizeEditController.text,
-                "shape" : shapeEditController.text,
-                "color" : colorLeafEditController.text,
-                "environment" : environmentEditController.text,
-                "soilType" : soilTypeEditController.text,
-                "waterRequirement" : waterRequirementEditController.text,
-              }
-            ).then((value) {
-              print("Successfully added the plant");
-            }).catchError((error){
-              print("Failed to add. " + error.toString());
-            });
+              print(nameEditController.text);
+              var timestamp = new DateTime.now().millisecondsSinceEpoch;
+              FirebaseDatabase.instance
+                  .reference()
+                  .child("plants/plant" + timestamp.toString())
+                  .set({
+                "name": nameEditController.text,
+                "location": currLocationEditController.text,
+                "age": ageEditController.text,
+                "fertilizer": fertilizerUsedEditController.text,
+                "size": sizeEditController.text,
+                "shape": shapeEditController.text,
+                "color": colorLeafEditController.text,
+                "environment": environmentEditController.text,
+                "soilType": soilTypeEditController.text,
+                "waterRequirement": waterRequirementEditController.text,
+              }).then((value) {
+                print("Successfully added the plant");
+              }).catchError((error) {
+                print("Failed to add. " + error.toString());
+              });
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-
-          }
-        )
-
-        ]
-
-      ),
-
-     );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            })
+      ]),
+    );
   }
 }
