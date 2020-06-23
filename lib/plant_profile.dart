@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:camera/camera.dart';
+import 'package:flutterappflorafy/take_picture_page.dart';
+import 'dart:async';
+import 'package:flutterappflorafy/home_page.dart';
+
 
 import 'home_page.dart';
 
@@ -14,6 +19,27 @@ class PlantProfilePage extends StatefulWidget {
 }
 
 class _PlantProfilePageState extends State<PlantProfilePage> {
+  var plantProfile;
+
+  @override
+  void initState(){
+    //TODO: implement init state
+    super.initState();
+
+    FirebaseAuth.instance.currentUser().then((value) {
+      var uid = value.uid;
+      FirebaseDatabase.instance.reference().child("user/" + uid).once()
+      .then((ds) {
+        print(ds.value);
+        plantProfile = ds.value;
+        setState(() {
+
+        });
+      }).catchError((error) {
+        print("Failed to get user information.");
+      });
+    });
+  }
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference ref = FirebaseDatabase.instance.reference();
 
@@ -66,6 +92,19 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+//    FirebaseAuth.instance.currentUser().then((value) {
+//      var uid = value.uid;
+//      FirebaseDatabase.instance.reference().child("user/" + uid).once()
+//          .then((ds) {
+//        print(ds.value);
+//        plantProfile = ds.value;
+//        setState(() {
+//
+//        });
+//      }).catchError((error) {
+//        print("Failed to get user information.");
+//      });
+//    });
     return Scaffold(
       appBar: AppBar(title: Text('Create Plant Profile')),
       body: Column(children: <Widget>[
@@ -87,23 +126,38 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                 );
               }),
         ),
+        FloatingActionButton(
+            child: Icon(Icons.camera_alt),
+            onPressed: () async {
+              print("clicked");
+              final cameras = await availableCameras();
+              final firstCamera = cameras.first;
+
+             final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)),
+              );
+
+              plantProfile['image'] = result;
+            setState(() {
+                FirebaseDatabase.instance.reference().child("user/" + plantProfile['uid'])
+                    .set(plantProfile).then((value) {
+                  print("Updated plant profile");
+                }).catchError((error) {
+                  print("Failed to update the user profile");
+                });
+              });
+
+            }),
         RaisedButton(
             child: Text('Add plant Profile'),
             color: Colors.teal,
             onPressed: () {
-              /*
-                ref.child("students/003").set(
-                  {
-                    "name" : nameEditController.text.toString();
-                    "size" : sizeEditController.text.toString();
-                  }
-                )
-                 */
               print(nameEditController.text);
               var timestamp = new DateTime.now().millisecondsSinceEpoch;
               FirebaseDatabase.instance
                   .reference()
-                  .child("plants/plant" + timestamp.toString())
+                  .child("user/" + currentUser + "/plantProfile" + timestamp.toString())    //timestamp.toString())
                   .set({
                 "name": nameEditController.text,
                 "location": currLocationEditController.text,
@@ -115,6 +169,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                 "environment": environmentEditController.text,
                 "soilType": soilTypeEditController.text,
                 "waterRequirement": waterRequirementEditController.text,
+                //"image":
               }).then((value) {
                 print("Successfully added the plant");
               }).catchError((error) {
@@ -129,4 +184,18 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
       ]),
     );
   }
+
+
+
 }
+
+//class PlantProfile {
+//  //each post has a picture and description.
+//  // So each picture has picture description of plant
+//  //
+//  AssetImage image;
+//  String description;
+//  User user;
+//
+//  PlantProfile(this.image, this.user, this.description);
+//}
