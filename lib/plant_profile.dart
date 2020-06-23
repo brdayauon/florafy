@@ -157,7 +157,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
               var timestamp = new DateTime.now().millisecondsSinceEpoch;
               FirebaseDatabase.instance
                   .reference()
-                  .child("user/" + currentUser + "/plantProfile" + timestamp.toString())    //timestamp.toString())
+                  .child("user/" + currentUser + "/plantProfile/plant" + timestamp.toString())    //timestamp.toString())
                   .set({
                 "name": nameEditController.text,
                 "location": currLocationEditController.text,
