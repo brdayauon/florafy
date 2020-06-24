@@ -20,6 +20,7 @@ class PlantProfilePage extends StatefulWidget {
 
 class _PlantProfilePageState extends State<PlantProfilePage> {
   var plantProfile;
+  var timestamp = new DateTime.now().millisecondsSinceEpoch;
 
   @override
   void initState(){
@@ -30,7 +31,6 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
       var uid = value.uid;
       FirebaseDatabase.instance.reference().child("user/" + uid).once()
       .then((ds) {
-        print(ds.value);
         plantProfile = ds.value;
         setState(() {
 
@@ -92,19 +92,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-//    FirebaseAuth.instance.currentUser().then((value) {
-//      var uid = value.uid;
-//      FirebaseDatabase.instance.reference().child("user/" + uid).once()
-//          .then((ds) {
-//        print(ds.value);
-//        plantProfile = ds.value;
-//        setState(() {
-//
-//        });
-//      }).catchError((error) {
-//        print("Failed to get user information.");
-//      });
-//    });
+
     return Scaffold(
       appBar: AppBar(title: Text('Create Plant Profile')),
       body: Column(children: <Widget>[
@@ -126,76 +114,81 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                 );
               }),
         ),
-        FloatingActionButton(
-            child: Icon(Icons.camera_alt),
+        RaisedButton(  //camera button
+            child: Text('Take photo and add plant Profile'),
+            color: Colors.teal,
             onPressed: () async {
-              print("clicked");
+
               final cameras = await availableCameras();
               final firstCamera = cameras.first;
 
-             final result = await Navigator.push(
+              var result = await Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)),
               );
-
-              plantProfile['image'] = result;
             setState(() {
-                FirebaseDatabase.instance.reference().child("user/" + plantProfile['uid'])
-                    .set(plantProfile).then((value) {
-                  print("Updated plant profile");
+                FirebaseDatabase.instance.reference()
+                    .child("user/" + currentUser + "/plantProfile/plant" + timestamp.toString())
+                    .set({
+                  "name": nameEditController.text,
+                  "location": currLocationEditController.text,
+                  "age": ageEditController.text,
+                  "fertilizer": fertilizerUsedEditController.text,
+                  "size": sizeEditController.text,
+                  "shape": shapeEditController.text,
+                  "color": colorLeafEditController.text,
+                  "environment": environmentEditController.text,
+                  "soilType": soilTypeEditController.text,
+                  "waterRequirement": waterRequirementEditController.text,
+                  'image' : result,
+                })
+                    .then((value) {
+                  print("Successfully added plant profile");
+                  Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+
                 }).catchError((error) {
-                  print("Failed to update the user profile");
+                  print("Failed to add the user profile");
                 });
               });
 
             }),
-        RaisedButton(
-            child: Text('Add plant Profile'),
-            color: Colors.teal,
-            onPressed: () {
-              print(nameEditController.text);
-              var timestamp = new DateTime.now().millisecondsSinceEpoch;
-              FirebaseDatabase.instance
-                  .reference()
-                  .child("user/" + currentUser + "/plantProfile/plant" + timestamp.toString())    //timestamp.toString())
-                  .set({
-                "name": nameEditController.text,
-                "location": currLocationEditController.text,
-                "age": ageEditController.text,
-                "fertilizer": fertilizerUsedEditController.text,
-                "size": sizeEditController.text,
-                "shape": shapeEditController.text,
-                "color": colorLeafEditController.text,
-                "environment": environmentEditController.text,
-                "soilType": soilTypeEditController.text,
-                "waterRequirement": waterRequirementEditController.text,
-                //"image":
-              }).then((value) {
-                print("Successfully added the plant");
-              }).catchError((error) {
-                print("Failed to add. " + error.toString());
-              });
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            })
+//        RaisedButton(
+//            child: Text('Add plant Profile'),
+//            color: Colors.teal,
+//            onPressed: () {
+//              print(nameEditController.text);
+//              FirebaseDatabase.instance
+//                  .reference()
+//                  .child("user/" + currentUser + "/plantProfile/plant" + timestamp.toString())    //timestamp.toString())
+//                  .set({
+//                "name": nameEditController.text,
+//                "location": currLocationEditController.text,
+//                "age": ageEditController.text,
+//                "fertilizer": fertilizerUsedEditController.text,
+//                "size": sizeEditController.text,
+//                "shape": shapeEditController.text,
+//                "color": colorLeafEditController.text,
+//                "environment": environmentEditController.text,
+//                "soilType": soilTypeEditController.text,
+//                "waterRequirement": waterRequirementEditController.text,
+//              }).then((value) {
+//                print("Successfully added the plant");
+//
+//              }).catchError((error) {
+//                print("Failed to add. " + error.toString());
+//              });
+//
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => HomePage()),
+//              );
+//            })
       ]),
     );
   }
 
 
-
 }
-
-//class PlantProfile {
-//  //each post has a picture and description.
-//  // So each picture has picture description of plant
-//  //
-//  AssetImage image;
-//  String description;
-//  User user;
-//
-//  PlantProfile(this.image, this.user, this.description);
-//}
