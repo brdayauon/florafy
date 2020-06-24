@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,13 +9,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   _onTap(int index) {
-   // if (index == 1) {
-      Navigator.of(context)
-          .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return new PlantProfilePage();
-      }));
+    // if (index == 1) {
+    Navigator.of(context)
+        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+      return new PlantProfilePage();
+    }));
 //    }
 //    else if (index == 2){
 //      Navigator.of(context)
@@ -28,6 +30,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   var plantProfileList = [];
+  var plantDetailsList = [];
+
   //static PlantProfile plantProfile = plantProfile1;
 
   _HomePageState() {
@@ -35,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     // display in ListView
     FirebaseDatabase.instance
         .reference()
-        .child("plants")
+        .child("user/Ue3zbFg0TpgxtXkP5ETqPJpxomm2")
         .once()
         .then((datasnapshot) {
       print("Successfully loaded the data");
@@ -109,6 +113,32 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var usersPlant = plantProfileList[0]["uid"];
+    FirebaseDatabase.instance
+        .reference()
+        .child("user/" + usersPlant + "/plantProfile")
+        .once()
+        .then((dns) {
+      var usertmpList = [];
+      dns.value.forEach((k, v) {
+        print(k);
+        print(v);
+        usertmpList.add(v);
+      });
+      print("PLANT DETAILS LIST IS: ");
+
+      //print(usertmpList);
+      plantDetailsList = usertmpList;
+      print(plantDetailsList);
+      print(plantDetailsList == plantProfileList);
+
+//      print(" ");
+//      print("Plant Profile list is: ");
+//      print(plantProfileList);
+    }).catchError((error) {
+      print("failed to put stuff in usersPlant");
+      print(error);
+    });
     return Scaffold(
       appBar: AppBar(title: Text('Home Page')),
       body: Column(children: <Widget>[
@@ -119,23 +149,27 @@ class _HomePageState extends State<HomePage> {
                 return Container(
                   height: 60,
                   child: Center(
-                    child: Image(
-                      image:
-                          NetworkImage('${plantProfileList[index]['image']}'),
-                      fit: BoxFit.cover,
+                    child: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('${plantDetailsList[index]['image']}'),
+                      // fit: BoxFit.cover,
                     ),
                   ),
                 );
               }),
-        )
+        ),
+        Text('usersplant: ${[usersPlant]}'),
+        Text('age: ${plantDetailsList[0]['age']}'),
+        Text('Name: ${plantProfileList[0]['name']}'),
+        Text('Image: ${plantProfileList[0]['image']}'),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: _items,
-
         onTap: _onTap,
       ),
     );
   }
+
   final _items = [
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
@@ -150,11 +184,7 @@ class _HomePageState extends State<HomePage> {
       title: Text('View Plant Profile'),
     ),
   ];
-
 }
-
-
-
 
 //class PlantProfile {
 //  //each post has a picture and description.
@@ -166,7 +196,6 @@ class _HomePageState extends State<HomePage> {
 //
 //  PlantProfile(this.image, this.user, this.description);
 //}
-
 
 //class User {
 //  //name of user
