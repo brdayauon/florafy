@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:expand_widget/expand_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -52,6 +53,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+//    theme: ThemeData();
+//    darkTheme: ThemeData.dark();
+
     var db = FirebaseDatabase.instance.reference().child("user");
     db.once().then((DataSnapshot snapshot){
       Map<dynamic, dynamic> values = snapshot.value;
@@ -67,7 +71,9 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(title: Text('Home Page')),
+
       body: ListView.builder(
+
           itemCount: plantDetailsList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
@@ -75,7 +81,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     height: 50,
-                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 20),
+                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
+                    color: Colors.grey,
                     child: Row(
                       children: [
                         Container(
@@ -85,10 +92,13 @@ class _HomePageState extends State<HomePage> {
                                 NetworkImage('${plantDetailsList[index]['profilePicture']}'),
                           ),
                         ),
-                        Text('${plantDetailsList[index]['name']}'),
-                        IconButton(
-                          icon: Icon(Icons.more_horiz),
-                          onPressed: () {},
+                        Text('${plantProfileList[index]['name']}'),
+                        Container(
+                          margin: EdgeInsets.only(left: 145),
+                          child: IconButton(
+                            icon: Icon(Icons.message),
+                            onPressed: () {},
+                          ),
                         ),
                       ],
                     ),
@@ -97,14 +107,62 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Image(
-                          image: NetworkImage('${plantDetailsList[index]['image']}'),
+                        Container(
+                          constraints: BoxConstraints(
+                            maxHeight: 282,
+                            maxWidth: 400,
+                          ),
+                          child: Center(
+                            child: Image(
+
+                              image: NetworkImage('${plantDetailsList[index]['image']}'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                        Text('${plantDetailsList[index].toString()}'),
+                        Container(
+                          child:
+                          Text(
+                            'Description: ${plantDetailsList[index]['description']}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black38,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        ExpandChild(
+                          hideArrowOnExpanded: false,
+                          arrowColor: Colors.grey,
+
+                          child: (
+                          IconButton(
+                            icon: IconButton(
+                              icon: Icon(Icons.more_horiz),
+                              onPressed: (){
+                               ExpandText(
+                                   'HELLO FUCKIHG WORK',
+                               textAlign: TextAlign.justify,
+                               style: TextStyle(
+                                 fontSize: 18,
+                                 color:  Colors.black38
+                               ),
+                               );
+                              },
+                            ),
+                          )
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
+
 
               
 
@@ -156,4 +214,23 @@ class _HomePageState extends State<HomePage> {
       title: Text('View Plant Profile'),
     ),
   ];
+}
+class SecondRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Plant Details"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child:
+          Text('Go back!'),
+        ),
+      ),
+    );
+  }
 }
