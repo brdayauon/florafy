@@ -84,9 +84,8 @@ class _ChatPageState extends State<ChatPage> {
               controller: scrollController,
               itemCount: messageList.length,
               itemBuilder: (BuildContext context, int index) {
-                return messageList[index]['uid'] ==
-                        UserProfile.currentUser['uid']
-                    ? Container(
+                return messageList[index]['uid'] == UserProfile.currentUser['uid'] ?
+                Container(
                         margin: EdgeInsets.all(5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -104,13 +103,11 @@ class _ChatPageState extends State<ChatPage> {
                                           Radius.circular(5)),
                                     ),
                                     child: messageList[index]['type'] != null &&  messageList[index]['type'] ==  "image" ?
-                                        Image.network("messageList[index]['text']") :
-                                    Text(messageList[index]['text'])),
+                                        Image.network(messageList[index]['text']) :
+                                    Text(messageList[index]['text'])
+                                ),
                                 Text(
-                                  'Sent At ' +
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                              messageList[index]['timestamp'])
-                                          .toString(),
+                                  'Sent At ' + DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp']).toString(),
                                   style: TextStyle(fontSize: 12),
                                 ),
                                 //  Text(DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp'].toIso8601String())
@@ -124,16 +121,16 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                             ),
                           ],
-                        ))
-                    : Container(
+                        )
+                ) :
+                Container(
                         margin: EdgeInsets.all(5),
                         child: Row(
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(right: 5),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    '${messageList[index]['image']}'),
+                                backgroundImage: NetworkImage('${messageList[index]['image']}'),
                               ),
                             ),
                             Column(
@@ -145,15 +142,16 @@ class _ChatPageState extends State<ChatPage> {
                                     margin: EdgeInsets.only(bottom: 3),
                                     decoration: new BoxDecoration(
                                       color: Colors.black12,
-                                      borderRadius: new BorderRadius.all(
-                                          Radius.circular(5)),
+                                      borderRadius: new BorderRadius.all(Radius.circular(5)),
                                     ),
-                                    child: Text(messageList[index]['text'])),
+                                    child: Text(messageList[index]['list'])
+
+//                                    messageList[index]['type'] != null &&  messageList[index]['type'] ==  "image" ?
+//                                    Image.network(messageList[index]['text']) :
+//                                    Text(messageList[index]['text'])
+                                ),
                                 Text(
-                                  'Sent At ' +
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                              messageList[index]['timestamp'])
-                                          .toString(),
+                                  'Sent At ' + DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp']).toString(),
                                   style: TextStyle(fontSize: 12),
                                 ),
                                 //  Text(DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp'].toIso8601String())
@@ -211,14 +209,9 @@ class _ChatPageState extends State<ChatPage> {
                   "text": messageController.text,
                   "type" : 'text',
                   "timestamp": timestamp,
-                  "uid": UserProfile.currentUser['uid'],
+                  "uid": UserProfile.currentUser['uid']
                 };
-                FirebaseDatabase.instance
-                    .reference()
-                    .child(("message/" +
-                        firebaseMessageRoot +
-                        "/" +
-                        timestamp.toString()))
+                FirebaseDatabase.instance.reference().child(("message/" + firebaseMessageRoot + "/" + timestamp.toString()))
                     .set(messageRecord)
                     .then((value) {
                   print("Added the message!");
