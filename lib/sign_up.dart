@@ -2,6 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterappflorafy/main.dart';
+import 'package:path/path.dart';
+import 'plant_profile.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -46,6 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 labelText: 'Name',
               ),
             ),
+
             FlatButton(
               child: Text("Sign Up"),
               onPressed: () {
@@ -68,10 +71,16 @@ class _SignUpPageState extends State<SignUpPage> {
 
                   FirebaseDatabase.instance
                       .reference()
-                      .child("plants/" + authResult.user.uid)
+                      .child("user/" + authResult.user.uid)
                       .set(userProfile)
                       .then((value) {
                     print(("Successfullly created the profile information"));
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PlantProfilePage()),
+                    );
+
                   }).catchError((error) {
                     print("Failed to create the profile info.");
                   });
