@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterappflorafy/chat_page.dart';
 import 'package:flutterappflorafy/home_page.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
 import 'package:flutterappflorafy/sign_up.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Florafy Home Page'),
+      home: MyHomePage(title: 'Florafy Login Page'),
     );
   }
 }
@@ -98,8 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  Text('Forgot Password?',
-                      style: TextStyle(color: Colors.teal)),
+//                  Text('Forgot Password?',
+//                      style: TextStyle(color: Colors.teal)),
                   InkWell(
                     child: Text('Create a new Account',
                         style: TextStyle(color: Colors.teal)),
@@ -157,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => PlantProfilePage()),
           );
         },
         tooltip: 'Increment',
