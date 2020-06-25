@@ -47,7 +47,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _ChatPageState() {
-
   }
 
   void _refreshMessageList() {
@@ -60,7 +59,7 @@ class _ChatPageState extends State<ChatPage> {
       var tmpList = [];
       ds.value.forEach((k, v) {
         v['image'] =
-            'https://firebasestorage.googleapis.com/v0/b/florafy-7dacd.appspot.com/o/profile%2FflorafyLogo.png?alt=media&token=2db644bf-c717-4340-94bc-397a2b81b378';
+        'https://firebasestorage.googleapis.com/v0/b/florafy-7dacd.appspot.com/o/profile%2FflorafyLogo.png?alt=media&token=2db644bf-c717-4340-94bc-397a2b81b378';
         tmpList.add(v);
       });
 
@@ -74,157 +73,162 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: <Widget>[
-        Expanded(
-          child: ListView.builder(
-              controller: scrollController,
-              itemCount: messageList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return messageList[index]['uid'] == UserProfile.currentUser['uid'] ?
-                Container(
-                        margin: EdgeInsets.all(5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Container(
-                                    // width: 250,
-                                    padding: EdgeInsets.all(10),
-                                    margin: EdgeInsets.only(bottom: 3),
-                                    decoration: new BoxDecoration(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                controller: scrollController,
+                itemCount: messageList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return messageList[index]['uid'] == UserProfile.currentUser['uid'] ?
+                  Container(
+                      margin: EdgeInsets.all(5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        //mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Container(
+                            width: 110,
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.only(bottom: 3),
+                                  decoration: new BoxDecoration(
                                       color: Colors.black12,
-                                      borderRadius: new BorderRadius.all(
-                                          Radius.circular(5)),
-                                    ),
-                                    child: messageList[index]['type'] != null &&  messageList[index]['type'] ==  "image" ?
-                                        Image.network(messageList[index]['text']) :
-                                    Text(messageList[index]['text'])
-                                ),
-                                Text(
-                                  'Sent At ' + DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp']).toString(),
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                //  Text(DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp'].toIso8601String())
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 5),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    '${messageList[index]['image']}'),
+                                      borderRadius: new BorderRadius.all(Radius.circular(5.0))
+                                  ),
+                                  child: messageList[index]['type'] != null && messageList[index]['type'] == "image" ?
+                                  Image.network(messageList[index]['text']) :
+                                  Text(messageList[index]['text'])
                               ),
-                            ),
-                          ],
-                        )
-                ) :
-                Container(
-                        margin: EdgeInsets.all(5),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(right: 5),
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage('${messageList[index]['image']}'),
+                              Text(
+                                'Sent at ' + DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp']).toString(),
+                                style: TextStyle(
+                                    fontSize: 12
+                                ),
                               ),
+                            ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 5),
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage('${messageList[index]['image']}'),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                    // width: 250,
-                                    padding: EdgeInsets.all(10),
-                                    margin: EdgeInsets.only(bottom: 3),
-                                    decoration: new BoxDecoration(
-                                      color: Colors.black12,
-                                      borderRadius: new BorderRadius.all(Radius.circular(5)),
-                                    ),
-                                    child: Text(messageList[index]['list'])
-
-//                                    messageList[index]['type'] != null &&  messageList[index]['type'] ==  "image" ?
-//                                    Image.network(messageList[index]['text']) :
-//                                    Text(messageList[index]['text'])
-                                ),
-                                Text(
-                                  'Sent At ' + DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp']).toString(),
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                //  Text(DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp'].toIso8601String())
-                              ],
+                          ),
+                        ],
+                      )
+                  ) :
+                  Container(      //OTHER PERSON
+                      margin: EdgeInsets.all(5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 5),
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage('${messageList[index]['image']}'),
                             ),
-                          ],
-                        ));
-              }),
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: TextField(
-                controller: messageController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Type your message here',
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                             width: 110,
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.only(bottom: 3),
+                                  decoration: new BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: new BorderRadius.all(Radius.circular(5.0))
+                                  ),
+                                  child: messageList[index]['type'] != null && messageList[index]['type'] == "image" ?
+                                  Image.network(messageList[index]['text']) :
+                                  Text(messageList[index]['text'])
+                              ),
+                              Text(
+                                'Sent at ' + DateTime.fromMillisecondsSinceEpoch(messageList[index]['timestamp']).toString(),
+                                style: TextStyle(
+                                    fontSize: 12
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                  );
+                }
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: messageController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Type your message here',
+                  ),
                 ),
               ),
-            ),
-            IconButton(
-              icon: Icon(Icons.photo),
-              onPressed: () async{
-                final cameras = await availableCameras();
-                final firstCamera = cameras.first;
+              IconButton(
+                icon: Icon(Icons.photo),
+                onPressed: () async {
+                  final cameras = await availableCameras();
+                  final firstCamera = cameras.first;
 
-                var result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)),
-                );
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)),
+                  );
 
-                var timestamp = DateTime.now().millisecondsSinceEpoch;
-                var messageRecord = {
-                  "text": result,
-                  "type": "image",
-                  "timestamp": timestamp,
-                  "uid": UserProfile.currentUser['uid'],
-                };
+                  var timestamp = DateTime.now().millisecondsSinceEpoch;
+                  var messageRecord = {
+                    "text" : result,
+                    "type" : "image",
+                    "timestamp" : timestamp,
+                    "uid" : UserProfile.currentUser['uid']
+                  };
+                  FirebaseDatabase.instance.reference().child("message/" + firebaseMessageRoot + "/" + timestamp.toString())
+                      .set(messageRecord)
+                      .then((value) {
+                    print("Added the message!");
+                    messageController.text = "";
+                  }).catchError((error) {
+                    print("Failed to add the message");
+                    messageController.text = "";
+                  });
 
-                FirebaseDatabase.instance.reference().child("message/" + firebaseMessageRoot + "/" + timestamp.toString())
-                .set(messageRecord)
-                .then((value) {
-                  print("ADDED THE MESSAGE");
-                }).catchError((error) {
-                  print("FAILED TO ADD MESSAGE");
-                  messageController.text = "";
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () {
-                var timestamp = DateTime.now().millisecondsSinceEpoch;
-                var messageRecord = {
-                  "text": messageController.text,
-                  "type" : 'text',
-                  "timestamp": timestamp,
-                  "uid": UserProfile.currentUser['uid']
-                };
-                FirebaseDatabase.instance.reference().child(("message/" + firebaseMessageRoot + "/" + timestamp.toString()))
-                    .set(messageRecord)
-                    .then((value) {
-                  print("Added the message!");
-                  messageController.text = "";
-                }).catchError((error) {
-                  print("Failed to add the message");
-                  messageController.text = "";
-                });
-              },
-            )
-          ],
-        )
-      ],
-    ));
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () {
+                  var timestamp = DateTime.now().millisecondsSinceEpoch;
+                  var messageRecord = {
+                    "text" : messageController.text,
+                    "type" : 'text',
+                    "timestamp" : timestamp,
+                    "uid" : UserProfile.currentUser['uid']
+                  };
+                  FirebaseDatabase.instance.reference().child("message/" + firebaseMessageRoot + "/" + timestamp.toString())
+                      .set(messageRecord)
+                      .then((value) {
+                    print("Added the message!");
+                    messageController.text = "";
+                  }).catchError((error) {
+                    print("Failed to add the message");
+                    messageController.text = "";
+                  });
+                },
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
