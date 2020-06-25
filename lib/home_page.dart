@@ -165,30 +165,36 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   Container(
-                    child: Row(
-                      children: <Widget>[
-                        ExpandChild(
-                          hideArrowOnExpanded: false,
-                          arrowColor: Colors.grey,
+                      child: Row(
+                        children: <Widget>[
+                          ExpandChild(
+                            hideArrowOnExpanded: false,
+                            arrowColor: Colors.grey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                  Container(
 
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                                  ),
+                                    ExpandText('Plant Details',style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('Age: ${plantDetailsList[index]['age']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('Color: ${plantDetailsList[index]['color']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('Environment: ${plantDetailsList[index]['environment']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('Location: ${plantDetailsList[index]['location']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('size: ${plantDetailsList[index]['size']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('Soil Type: ${plantDetailsList[index]['soilType']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                                    ExpandText('Water Requirement: ${plantDetailsList[index]['waterRequirement']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
 
-                            children: <Widget>[
+                                  ],
+                                ),
+                                //mainAxisAlignment: MainAxisAlignment.center,
+                                //crossAxisAlignment: CrossAxisAlignment.center,
+//                              children: <Widget>[
+//                            ],
 
-                            ExpandText('Plant Details'),
-                            ExpandText('Age: ${plantDetailsList[index]['age']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                            ExpandText('Color: ${plantDetailsList[index]['color']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                            ExpandText('Environment: ${plantDetailsList[index]['environment']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                            ExpandText('Location: ${plantDetailsList[index]['location']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                            ExpandText('size: ${plantDetailsList[index]['size']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                            ExpandText('Soil Type: ${plantDetailsList[index]['soilType']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                            ExpandText('Water Requirement: ${plantDetailsList[index]['waterRequirement']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                          ],
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ),
                 ],
               ),
