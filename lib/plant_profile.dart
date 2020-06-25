@@ -55,6 +55,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
   static var environmentEditController = TextEditingController();
   static var soilTypeEditController = TextEditingController();
   static var waterRequirementEditController = TextEditingController();
+  static var plantDescriptionEditController = TextEditingController();
 
   _PlantProfilePageState() {
     _auth.currentUser().then((user) {
@@ -75,7 +76,9 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
     'Leaf Shape',
     'Leaf Color',
     'Environment',
+    'Soil',
     'Water Requirement',
+    'Describe your plant more',
   ];
   final List<TextEditingController> controllers = <TextEditingController>[
     nameEditController,
@@ -88,6 +91,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
     environmentEditController,
     soilTypeEditController,
     waterRequirementEditController,
+    plantDescriptionEditController,
   ];
 
   @override
@@ -126,9 +130,10 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                 context,
                 MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)),
               );
+
             setState(() {
                 FirebaseDatabase.instance.reference()
-                    .child("user/" + currentUser + "/plantProfile/plant" + timestamp.toString())
+                    .child("user/" + currentUser + "/plantProfile/")
                     .set({
                   "name": nameEditController.text,
                   "location": currLocationEditController.text,
@@ -140,7 +145,8 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
                   "environment": environmentEditController.text,
                   "soilType": soilTypeEditController.text,
                   "waterRequirement": waterRequirementEditController.text,
-                  'image' : result,
+                  "image" : result,
+                  "description": plantDescriptionEditController.text,
                 })
                     .then((value) {
                   print("Successfully added plant profile");
@@ -155,37 +161,7 @@ class _PlantProfilePageState extends State<PlantProfilePage> {
               });
 
             }),
-//        RaisedButton(
-//            child: Text('Add plant Profile'),
-//            color: Colors.teal,
-//            onPressed: () {
-//              print(nameEditController.text);
-//              FirebaseDatabase.instance
-//                  .reference()
-//                  .child("user/" + currentUser + "/plantProfile/plant" + timestamp.toString())    //timestamp.toString())
-//                  .set({
-//                "name": nameEditController.text,
-//                "location": currLocationEditController.text,
-//                "age": ageEditController.text,
-//                "fertilizer": fertilizerUsedEditController.text,
-//                "size": sizeEditController.text,
-//                "shape": shapeEditController.text,
-//                "color": colorLeafEditController.text,
-//                "environment": environmentEditController.text,
-//                "soilType": soilTypeEditController.text,
-//                "waterRequirement": waterRequirementEditController.text,
-//              }).then((value) {
-//                print("Successfully added the plant");
-//
-//              }).catchError((error) {
-//                print("Failed to add. " + error.toString());
-//              });
-//
-//              Navigator.push(
-//                context,
-//                MaterialPageRoute(builder: (context) => HomePage()),
-//              );
-//            })
+
       ]),
     );
   }
