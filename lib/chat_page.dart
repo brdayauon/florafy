@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Container(
-                            width: 110,
+                            width: 120,
                                   padding: EdgeInsets.all(10),
                                   margin: EdgeInsets.only(bottom: 3),
                                   decoration: new BoxDecoration(
@@ -138,7 +138,7 @@ class _ChatPageState extends State<ChatPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                             width: 110,
+                             width: 120,
                                   padding: EdgeInsets.all(10),
                                   margin: EdgeInsets.only(bottom: 3),
                                   decoration: new BoxDecoration(
