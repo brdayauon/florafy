@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterappflorafy/user_profile.dart';
+import 'take_picture_page.dart';
+import 'package:camera/camera.dart';
 
 class ChatPage extends StatefulWidget {
   var uid;
@@ -101,7 +103,9 @@ class _ChatPageState extends State<ChatPage> {
                                       borderRadius: new BorderRadius.all(
                                           Radius.circular(5)),
                                     ),
-                                    child: Text(messageList[index]['text'])),
+                                    child: messageList[index]['type'] != null &&  messageList[index]['type'] ==  "image" ?
+                                        Image.network("messageList[index]['text']") :
+                                    Text(messageList[index]['text'])),
                                 Text(
                                   'Sent At ' +
                                       DateTime.fromMillisecondsSinceEpoch(
@@ -171,11 +175,41 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
             IconButton(
+              icon: Icon(Icons.photo),
+              onPressed: () async{
+                final cameras = await availableCameras();
+                final firstCamera = cameras.first;
+
+                var result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TakePictureScreen(camera: firstCamera)),
+                );
+
+                var timestamp = DateTime.now().millisecondsSinceEpoch;
+                var messageRecord = {
+                  "text": result,
+                  "type": "image",
+                  "timestamp": timestamp,
+                  "uid": UserProfile.currentUser['uid'],
+                };
+
+                FirebaseDatabase.instance.reference().child("message/" + firebaseMessageRoot + "/" + timestamp.toString())
+                .set(messageRecord)
+                .then((value) {
+                  print("ADDED THE MESSAGE");
+                }).catchError((error) {
+                  print("FAILED TO ADD MESSAGE");
+                  messageController.text = "";
+                });
+              },
+            ),
+            IconButton(
               icon: Icon(Icons.send),
               onPressed: () {
                 var timestamp = DateTime.now().millisecondsSinceEpoch;
                 var messageRecord = {
                   "text": messageController.text,
+                  "type" : 'text',
                   "timestamp": timestamp,
                   "uid": UserProfile.currentUser['uid'],
                 };

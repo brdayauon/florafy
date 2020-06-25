@@ -1,16 +1,21 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterappflorafy/chat_page.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:expand_widget/expand_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'user_profile.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
 
   _onTap(int index) {
     Navigator.of(context)
@@ -44,11 +49,32 @@ class _HomePageState extends State<HomePage> {
 //      print("Final Plant List: ");
 //      print(plantTmpList);
       plantProfileList = plantTmpList;
-      setState(() {});
+      setState(() {
+        FirebaseAuth.instance.currentUser().then((value) {
+          print(value);
+          var uid = value.uid;
+          print("uid: " + uid);
+          var userInfo = datasnapshot.value[uid];
+          UserProfile.currentUser = userInfo;
+          print("Current user info: " + userInfo);
+        }).catchError((error) {
+          print("failed to get  the user info");
+          print(error);
+        });
+      });
     }).catchError((error) {
 //      print("Failed to load the data!");
       print(error);
     });
+
+//    FirebaseAuth.instance.currentUser().then((value) {
+//      print(value);
+//      var uid = value.uid;
+//
+//    }).catchError((error) {
+//      print("failed to update the user");
+//    });
+
   }
 
   @override
@@ -60,8 +86,6 @@ class _HomePageState extends State<HomePage> {
     db.once().then((DataSnapshot snapshot){
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key,values) {
-        print("TEST FUCKING WORK PLEASE");
-        print(values["plantProfile"].runtimeType);
         //print(plantDetailsList);
         plantDetailsList.add(values["plantProfile"]);
         //add to a list
@@ -89,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                           margin: EdgeInsets.only(right: 20),
                           child: CircleAvatar(
                             backgroundImage:
-                                NetworkImage('${plantDetailsList[index]['profilePicture']}'),
+                                NetworkImage('${plantDetailsList[index]['image']}'),
                           ),
                         ),
                         Text('${plantProfileList[index]['name']}'),
@@ -97,7 +121,12 @@ class _HomePageState extends State<HomePage> {
                           margin: EdgeInsets.only(left: 145),
                           child: IconButton(
                             icon: Icon(Icons.message),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ChatPage(plantProfileList[index]['uid'])),
+                              );
+                            },
                           ),
                         ),
                       ],
@@ -112,11 +141,14 @@ class _HomePageState extends State<HomePage> {
                             maxHeight: 282,
                             maxWidth: 400,
                           ),
-                          child: Center(
-                            child: Image(
+                          child: Expanded(
 
-                              image: NetworkImage('${plantDetailsList[index]['image']}'),
-                              fit: BoxFit.cover,
+                            child: Center(
+                              child: Image(
+
+                                image: NetworkImage('${plantDetailsList[index]['image']}'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -139,22 +171,20 @@ class _HomePageState extends State<HomePage> {
                           hideArrowOnExpanded: false,
                           arrowColor: Colors.grey,
 
-                          child: (
-                          IconButton(
-                            icon: IconButton(
-                              icon: Icon(Icons.more_horiz),
-                              onPressed: (){
-                               ExpandText(
-                                   'HELLO FUCKIHG WORK',
-                               textAlign: TextAlign.justify,
-                               style: TextStyle(
-                                 fontSize: 18,
-                                 color:  Colors.black38
-                               ),
-                               );
-                              },
-                            ),
-                          )
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+
+                            children: <Widget>[
+
+                            ExpandText('Plant Details'),
+                            ExpandText('Age: ${plantDetailsList[index]['age']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                            ExpandText('Color: ${plantDetailsList[index]['color']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                            ExpandText('Environment: ${plantDetailsList[index]['environment']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                            ExpandText('Location: ${plantDetailsList[index]['location']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                            ExpandText('size: ${plantDetailsList[index]['size']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                            ExpandText('Soil Type: ${plantDetailsList[index]['soilType']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                            ExpandText('Water Requirement: ${plantDetailsList[index]['waterRequirement']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                          ],
                           ),
                         ),
                       ],
@@ -163,36 +193,10 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
 
-
-              
-
-
             );
           }),
 
-//      body: Column(children: <Widget>[
-//        Expanded(
-//          child: ListView.builder(
-//              itemCount: plantProfileList.length,
-//              itemBuilder: (BuildContext context, int index) {
-//                return Container(
-//                  height: 60,
-//                  child: Center(
-//                    child: CircleAvatar(
-//                      backgroundImage:
-//                      NetworkImage('${plantProfileList[index]['name']}'),
-//                      // fit: BoxFit.cover,
-//                    ),
-//                  ),
-//                );
-//              }),
-//        ),
-//        Text('uid: ${plantProfileList[0]['uid']}'),
-//        Text('uid: ${plantProfileList[0]['uid']}'),
-//        Text('Image: ${plantProfileList[0]['image']}'),
-//        Text('PlantProfile: ${plantProfileList[0]['plantProfile']}'),
-//
-//      ]),
+
       bottomNavigationBar: BottomNavigationBar(
         items: _items,
         onTap: _onTap,
@@ -211,7 +215,7 @@ class _HomePageState extends State<HomePage> {
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.view_list),
-      title: Text('View Plant Profile'),
+      title: Text('View Messages'),
     ),
   ];
 }
