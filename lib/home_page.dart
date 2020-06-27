@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                           margin: EdgeInsets.only(right: 20),
                           child: CircleAvatar(
                             backgroundImage:
-                                NetworkImage('${plantDetailsList[index]['image']}'),
+                            NetworkImage('${plantDetailsList[index]['image']}'),
                           ),
                         ),
                         Text('${plantProfileList[index]['name']}'),
@@ -123,8 +123,8 @@ class _HomePageState extends State<HomePage> {
                             icon: Icon(Icons.message),
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ChatPage(plantProfileList[index]['uid'])),
+                                context,
+                                MaterialPageRoute(builder: (context) => ChatPage(plantProfileList[index]['uid'])),
                               );
                             },
                           ),
@@ -132,69 +132,70 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-              Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          constraints: BoxConstraints(
-                            maxHeight: 282,
-                            maxWidth: 400,
-                          ),
-                          child: Expanded(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        constraints: BoxConstraints(
+                        //  maxHeight: 282,
+                          maxWidth: 400,
+                        ),
+                        child: Expanded(
 
-                            child: Center(
-                              child: Image(
+                          child: Center(
+                            child: Image(
 
-                                image: NetworkImage('${plantDetailsList[index]['image']}'),
-                                fit: BoxFit.cover,
-                              ),
+                              image: NetworkImage('${plantDetailsList[index]['image']}'),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                        Container(
-                          child:
-                          Text(
-                            'Description: ${plantDetailsList[index]['description']}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.black38,
-                            ),
+                      ),
+                      Container(
+                        child:
+                        Text(
+                          'Description: ${plantDetailsList[index]['description']}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black87,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                   Container(
-                      child: Row(
-                        children: <Widget>[
-                          ExpandChild(
-                            hideArrowOnExpanded: false,
-                            arrowColor: Colors.grey,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        ExpandChild(
+                          hideArrowOnExpanded: false,
+                          arrowColor: Colors.grey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
 
-                                  ),
-                                    ExpandText('Plant Details',style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('Age: ${plantDetailsList[index]['age']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('Color: ${plantDetailsList[index]['color']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('Environment: ${plantDetailsList[index]['environment']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('Location: ${plantDetailsList[index]['location']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('size: ${plantDetailsList[index]['size']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('Soil Type: ${plantDetailsList[index]['soilType']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
-                                    ExpandText('Water Requirement: ${plantDetailsList[index]['waterRequirement']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ),
+                              ExpandText('Plant Details',style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('Age: ${plantDetailsList[index]['age']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('Color: ${plantDetailsList[index]['color']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('Environment: ${plantDetailsList[index]['environment']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('Location: ${plantDetailsList[index]['location']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('size: ${plantDetailsList[index]['size']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('Soil Type: ${plantDetailsList[index]['soilType']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
+                              ExpandText('Water Requirement: ${plantDetailsList[index]['waterRequirement']}', style: TextStyle(fontSize: 14, color: Colors.black38),),
 
-                                  ],
-                                ),
-                                //mainAxisAlignment: MainAxisAlignment.center,
-                                //crossAxisAlignment: CrossAxisAlignment.center,
+                            ],
+                          ),
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          //crossAxisAlignment: CrossAxisAlignment.center,
 //                              children: <Widget>[
 //                            ],
 
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -202,11 +203,20 @@ class _HomePageState extends State<HomePage> {
             );
           }),
 
-
-      bottomNavigationBar: BottomNavigationBar(
-        items: _items,
-        onTap: _onTap,
-      ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlantProfilePage()),
+            );
+          },
+          tooltip: 'Edit',
+          child: Icon(Icons.edit),
+        ), // T
+//      bottomNavigationBar: BottomNavigationBar(
+//        items: _items,
+//        onTap: _onTap,
+//      ),
     );
   }
 
@@ -224,23 +234,4 @@ class _HomePageState extends State<HomePage> {
       title: Text('View Messages'),
     ),
   ];
-}
-class SecondRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Plant Details"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child:
-          Text('Go back!'),
-        ),
-      ),
-    );
-  }
 }
