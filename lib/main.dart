@@ -99,8 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-//                  Text('Forgot Password?',
-//                      style: TextStyle(color: Colors.teal)),
                   InkWell(
                     child: Text('Create a new Account',
                         style: TextStyle(color: Colors.teal)),
@@ -135,8 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       print("Successfully login! " + value.user.uid);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => HomePage()),
 
                         //MaterialPageRoute(builder: (context) => PlantProfilePage(uid: value.user.uid)),
                       );

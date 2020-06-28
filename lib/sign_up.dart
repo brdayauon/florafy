@@ -1,8 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterappflorafy/main.dart';
-import 'package:path/path.dart';
 import 'plant_profile.dart';
 
 class SignUpPage extends StatefulWidget {
