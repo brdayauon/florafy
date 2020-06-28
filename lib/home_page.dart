@@ -4,7 +4,6 @@ import 'package:flutterappflorafy/chat_page.dart';
 import 'package:flutterappflorafy/plant_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:expand_widget/expand_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'user_profile.dart';
 class HomePage extends StatefulWidget {
@@ -13,41 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
-
-  _onTap(int index) {
-    Navigator.of(context)
-        .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-      return new PlantProfilePage();
-    }));
-  }
 
   var plantProfileList = []; //user
   var plantDetailsList = []; //plant profiles
   var plantContents = [];
 
   _HomePageState() {
-    //load all plant profile from firebase database and
-    // display in ListView
+
     FirebaseDatabase.instance.reference().child("user").once()
         .then((datasnapshot) {
-//      print("Successfully loaded the data");
-//      print(datasnapshot);
-//      print("Key:");
-//      print(datasnapshot.key);
-//      print("Value: ");
-//      print(datasnapshot.value);
-//      print("iterating the value map:");
+
       var plantTmpList = [];
       datasnapshot.value.forEach((k, v) {
-//        print(k);
-//        print(v);
+
         plantTmpList.add(v);
       });
-//      print("Final Plant List: ");
-//      print(plantTmpList);
+
       plantProfileList = plantTmpList;
       setState(() {
         FirebaseAuth.instance.currentUser().then((value) {
@@ -63,32 +43,21 @@ class _HomePageState extends State<HomePage> {
         });
       });
     }).catchError((error) {
-//      print("Failed to load the data!");
+      print("Failed to load the data!");
       print(error);
     });
 
-//    FirebaseAuth.instance.currentUser().then((value) {
-//      print(value);
-//      var uid = value.uid;
-//
-//    }).catchError((error) {
-//      print("failed to update the user");
-//    });
 
   }
 
   @override
   Widget build(BuildContext context) {
-//    theme: ThemeData();
-//    darkTheme: ThemeData.dark();
 
     var db = FirebaseDatabase.instance.reference().child("user");
     db.once().then((DataSnapshot snapshot){
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key,values) {
-        //print(plantDetailsList);
         plantDetailsList.add(values["plantProfile"]);
-        //add to a list
 
       });
     });
@@ -105,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     height: 50,
-                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 0, right: 0),
+                    margin: EdgeInsets.only(top: 5, bottom: 5, left: 1, right: 1),
                     color: Colors.grey,
                     child: Row(
                       children: [
@@ -118,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text('${plantProfileList[index]['name']}'),
                         Container(
-                          margin: EdgeInsets.only(left: 145),
+                          margin: EdgeInsets.only(left: 120, right: 10, top: 5, bottom: 5),
                           child: IconButton(
                             icon: Icon(Icons.message),
                             onPressed: () {
@@ -188,10 +157,6 @@ class _HomePageState extends State<HomePage> {
 
                             ],
                           ),
-                          //mainAxisAlignment: MainAxisAlignment.center,
-                          //crossAxisAlignment: CrossAxisAlignment.center,
-//                              children: <Widget>[
-//                            ],
 
                         ),
                       ],
@@ -203,20 +168,20 @@ class _HomePageState extends State<HomePage> {
             );
           }),
 
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PlantProfilePage()),
-            );
-          },
-          tooltip: 'Edit',
-          child: Icon(Icons.edit),
+        floatingActionButton: Container(
+          margin: EdgeInsets.all(2),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PlantProfilePage()),
+              );
+            },
+            tooltip: 'Edit',
+            child: Icon(Icons.edit),
+          ),
         ), // T
-//      bottomNavigationBar: BottomNavigationBar(
-//        items: _items,
-//        onTap: _onTap,
-//      ),
+
     );
   }
 
